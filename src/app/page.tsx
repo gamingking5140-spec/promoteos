@@ -53,7 +53,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 mb-24">
 
             <Link
-              href="/login"
+              href="/dashboard"
               className="bg-white text-black px-8 py-5 rounded-3xl font-bold text-xl text-center"
             >
               Start Promoting →
