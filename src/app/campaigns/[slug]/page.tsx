@@ -78,7 +78,7 @@ export default function CampaignPage() {
   }
 
   const referralLink =
-    `http://localhost:3000/p/${campaign.slug}?ref=${promoter.referral_code}`;
+  `https://promoteos.vercel.app/p/${campaign.slug}?ref=${promoter.referral_code}`;
 
   const estimated =
     Math.floor(
