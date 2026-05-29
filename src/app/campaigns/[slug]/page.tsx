@@ -27,21 +27,39 @@ export default function CampaignPage() {
 
     const loadPage = async () => {
 
+      console.log("PAGE LOADED");
+      console.log("SLUG:", slug);
+
       const {
         data: { session },
       } = await supabase.auth.getSession();
+
+      console.log("SESSION:", session);
 
       if (!session?.user) {
         setLoading(false);
         return;
       }
 
-      const { data: promoterData } =
+      const { data: promoterData, error: promoterError } =
         await supabase
           .from("promoters")
           .select("*")
-          .limit(1)
+          .eq(
+            "user_id",
+            session.user.id
+          )
           .single();
+
+      console.log(
+        "PROMOTER:",
+        promoterData
+      );
+
+      console.log(
+        "PROMOTER ERROR:",
+        promoterError
+      );
 
       const { data: campaignData, error } =
         await supabase
@@ -50,9 +68,15 @@ export default function CampaignPage() {
           .eq("slug", slug)
           .single();
 
-         console.log("SLUG:", slug);
-         console.log("CAMPAIGN:", campaignData);
-         console.log("ERROR:", error);
+      console.log(
+        "CAMPAIGN:",
+        campaignData
+      );
+
+      console.log(
+        "CAMPAIGN ERROR:",
+        error
+      );
 
       setPromoter(promoterData);
       setCampaign(campaignData);
@@ -78,7 +102,7 @@ export default function CampaignPage() {
     );
   }
 
-  if (!campaign || !promoter) {
+  if (!campaign) {
     return (
       <>
         <Navbar />
@@ -86,6 +110,20 @@ export default function CampaignPage() {
         <main className="min-h-screen bg-black text-white flex items-center justify-center">
           <h1 className="text-3xl font-bold">
             Campaign not found
+          </h1>
+        </main>
+      </>
+    );
+  }
+
+  if (!promoter) {
+    return (
+      <>
+        <Navbar />
+
+        <main className="min-h-screen bg-black text-white flex items-center justify-center">
+          <h1 className="text-3xl font-bold">
+            Promoter not found
           </h1>
         </main>
       </>
