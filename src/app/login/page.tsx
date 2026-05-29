@@ -3,11 +3,8 @@
 import Navbar from "@/components/Navbar";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-
-  const router = useRouter();
 
   const [email, setEmail] =
     useState("");
@@ -17,6 +14,22 @@ export default function LoginPage() {
 
   const [loading, setLoading] =
     useState(false);
+
+  const googleLogin = async () => {
+
+    const { error } =
+      await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo:
+            "https://promoteos.vercel.app/dashboard",
+        },
+      });
+
+    if (error) {
+      alert(error.message);
+    }
+  };
 
   const login = async () => {
 
@@ -36,19 +49,13 @@ export default function LoginPage() {
       return;
     }
 
-await supabase.auth.getSession();
+    await supabase.auth.getSession();
 
-await new Promise((resolve) =>
-  setTimeout(resolve, 1500)
-);
+    await new Promise((resolve) =>
+      setTimeout(resolve, 1500)
+    );
 
-await supabase.auth.getSession();
-
-await new Promise((resolve) =>
-  setTimeout(resolve, 1500)
-);
-
-window.location.href = "/dashboard";
+    window.location.href = "/dashboard";
   };
 
   const signup = async () => {
@@ -90,8 +97,10 @@ window.location.href = "/dashboard";
         ]);
     }
 
-    alert(
-      "Account created successfully 🚀"
+    await supabase.auth.getSession();
+
+    await new Promise((resolve) =>
+      setTimeout(resolve, 1500)
     );
 
     window.location.href = "/dashboard";
@@ -114,6 +123,13 @@ window.location.href = "/dashboard";
           </p>
 
           <div className="space-y-5">
+
+            <button
+              onClick={googleLogin}
+              className="w-full bg-white text-black py-4 rounded-2xl font-bold text-lg"
+            >
+              Continue with Google
+            </button>
 
             <input
               type="email"
