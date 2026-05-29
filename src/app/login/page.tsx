@@ -36,7 +36,19 @@ export default function LoginPage() {
       return;
     }
 
-    window.location.href = "/dashboard";
+await supabase.auth.getSession();
+
+await new Promise((resolve) =>
+  setTimeout(resolve, 1500)
+);
+
+await supabase.auth.getSession();
+
+await new Promise((resolve) =>
+  setTimeout(resolve, 1500)
+);
+
+window.location.href = "/dashboard";
   };
 
   const signup = async () => {
