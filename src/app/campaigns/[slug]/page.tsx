@@ -50,8 +50,9 @@ export default function CampaignPage() {
           .eq("slug", slug)
           .single();
 
-      console.log(campaignData);
-      console.log(error);
+         console.log("SLUG:", slug);
+         console.log("CAMPAIGN:", campaignData);
+         console.log("ERROR:", error);
 
       setPromoter(promoterData);
       setCampaign(campaignData);
