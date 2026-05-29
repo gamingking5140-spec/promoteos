@@ -36,7 +36,7 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/dashboard");
+    window.location.href = "/dashboard";
   };
 
   const signup = async () => {
@@ -82,7 +82,7 @@ export default function LoginPage() {
       "Account created successfully 🚀"
     );
 
-    router.push("/dashboard");
+    window.location.href = "/dashboard";
   };
 
   return (
