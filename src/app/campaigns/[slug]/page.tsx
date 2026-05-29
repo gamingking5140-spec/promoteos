@@ -6,7 +6,13 @@ import { supabase } from "@/lib/supabase";
 import { useParams } from "next/navigation";
 
 export default function CampaignPage() {
+
   const params = useParams();
+
+  const slug =
+    Array.isArray(params.slug)
+      ? params.slug[0]
+      : params.slug;
 
   const [campaign, setCampaign] =
     useState<any>(null);
@@ -18,7 +24,9 @@ export default function CampaignPage() {
     useState(true);
 
   useEffect(() => {
+
     const loadPage = async () => {
+
       const {
         data: { session },
       } = await supabase.auth.getSession();
@@ -35,12 +43,15 @@ export default function CampaignPage() {
           .limit(1)
           .single();
 
-      const { data: campaignData } =
+      const { data: campaignData, error } =
         await supabase
           .from("campaigns")
           .select("*")
-          .eq("slug", params.slug)
+          .eq("slug", slug)
           .single();
+
+      console.log(campaignData);
+      console.log(error);
 
       setPromoter(promoterData);
       setCampaign(campaignData);
@@ -48,8 +59,11 @@ export default function CampaignPage() {
       setLoading(false);
     };
 
-    loadPage();
-  }, [params.slug]);
+    if (slug) {
+      loadPage();
+    }
+
+  }, [slug]);
 
   if (loading) {
     return (
@@ -78,7 +92,7 @@ export default function CampaignPage() {
   }
 
   const referralLink =
-  `https://promoteos.vercel.app/p/${campaign.slug}?ref=${promoter.referral_code}`;
+    `https://promoteos.vercel.app/p/${campaign.slug}?ref=${promoter.referral_code}`;
 
   const estimated =
     Math.floor(
@@ -100,6 +114,7 @@ ${referralLink}
 There is also a special lifetime deal available right now 🚀`;
 
   const copyLink = async () => {
+
     await navigator.clipboard.writeText(
       referralLink
     );
@@ -108,6 +123,7 @@ There is also a special lifetime deal available right now 🚀`;
   };
 
   const copyScript = async () => {
+
     await navigator.clipboard.writeText(
       outreachScript
     );
