@@ -40,12 +40,20 @@ export default function CampaignPage() {
 
       console.log("SESSION:", session);
 
-      const { data: promoterData, error: promoterError } =
-        await supabase
-          .from("promoters")
-          .select("*")
-          .limit(1)
-          .single();
+if (!session?.user) {
+  setLoading(false);
+  return;
+}
+
+const { data: promoterData, error: promoterError } =
+  await supabase
+    .from("promoters")
+    .select("*")
+    .eq(
+      "user_id",
+      session.user.id
+    )
+    .single();
 
       console.log(
         "PROMOTER:",
