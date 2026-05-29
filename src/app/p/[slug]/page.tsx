@@ -22,18 +22,21 @@ export default function ProductPage() {
   useEffect(() => {
     const loadCampaign = async () => {
 
+      if (!params.slug) return;
+
       const { data, error } =
         await supabase
           .from("campaigns")
           .select("*")
-          .eq("slug", params.slug)
+          .eq("slug", Array.isArray(params.slug) ? params.slug[0] : params.slug)
           .single();
 
       console.log(data);
-      console.log(data.checkout_url);
       console.log(error);
 
       if (!data) return;
+
+      console.log(data.checkout_url);
 
       setCampaign(data);
 

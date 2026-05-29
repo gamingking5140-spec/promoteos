@@ -30,6 +30,10 @@ export default function CampaignPage() {
       console.log("PAGE LOADED");
       console.log("SLUG:", slug);
 
+      if (!slug) {
+        return;
+      }
+
       const {
         data: { session },
       } = await supabase.auth.getSession();
@@ -84,9 +88,7 @@ export default function CampaignPage() {
       setLoading(false);
     };
 
-    if (slug) {
-      loadPage();
-    }
+    loadPage();
 
   }, [slug]);
 
