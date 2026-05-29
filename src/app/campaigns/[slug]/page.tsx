@@ -64,13 +64,27 @@ const { data: promoterData, error: promoterError } =
         "PROMOTER ERROR:",
         promoterError
       );
+      
+const { data: campaignData, error } =
+  await supabase
+    .from("campaigns")
+    .select("*");
 
-      const { data: campaignData, error } =
-        await supabase
-          .from("campaigns")
-          .select("*")
-          .eq("slug", slug)
-          .single();
+console.log("ALL CAMPAIGNS:", campaignData);
+console.log("CURRENT SLUG:", slug);
+console.log("ERROR:", error);
+
+const matchedCampaign =
+  campaignData?.find(
+    (c) => c.slug === slug
+  );
+
+console.log(
+  "MATCHED:",
+  matchedCampaign
+);
+
+setCampaign(matchedCampaign);
 
       console.log(
         "CAMPAIGN:",
