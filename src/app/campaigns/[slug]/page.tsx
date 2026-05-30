@@ -86,18 +86,17 @@ console.log(
 
 setCampaign(matchedCampaign);
 
-      console.log(
-        "CAMPAIGN:",
-        campaignData
-      );
+console.log(
+  "CAMPAIGN:",
+  matchedCampaign
+);
 
-      console.log(
-        "CAMPAIGN ERROR:",
-        error
-      );
+console.log(
+  "CAMPAIGN ERROR:",
+  error
+);
 
-      setPromoter(promoterData);
-      setCampaign(campaignData);
+setPromoter(promoterData);
 
       setLoading(false);
     };
