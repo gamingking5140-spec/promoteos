@@ -14,8 +14,11 @@ export default function DashboardPage() {
   const [activities, setActivities] =
     useState<any[]>([]);
 
-  const [username, setUsername] =
+    const [username, setUsername] =
     useState("");
+    const [upiId, setUpiId] =
+    useState("");
+
 
   useEffect(() => {
     const loadDashboard = async () => {
@@ -35,6 +38,7 @@ export default function DashboardPage() {
       if (!promoter) return;
 
       setUsername(promoter.username);
+      setUpiId(promoter.upi_id || "");
       setCoins(promoter.coins || 0);
 
       const { data: referrals } =
@@ -107,6 +111,48 @@ const totalEarnings =
             </p>
 
           </div>
+<div className="bg-zinc-900 rounded-[32px] p-8 border border-zinc-800 mb-8">
+
+  <h2 className="text-2xl font-bold mb-4">
+    Withdrawal Settings 💸
+  </h2>
+
+  <input
+    type="text"
+    placeholder="yourupi@paytm"
+    value={upiId}
+    onChange={(e) =>
+      setUpiId(e.target.value)
+    }
+    className="w-full bg-black border border-zinc-800 rounded-2xl px-5 py-4"
+  />
+
+  <button
+    onClick={async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session?.user) return;
+
+      await supabase
+        .from("promoters")
+        .update({
+          upi_id: upiId,
+        })
+        .eq(
+          "user_id",
+          session.user.id
+        );
+
+      alert("UPI Saved ✅");
+    }}
+    className="mt-4 bg-white text-black px-6 py-3 rounded-2xl font-bold"
+  >
+    Save UPI
+  </button>
+
+</div>
 
           <div className="grid md:grid-cols-4 gap-6 mb-10">
 
