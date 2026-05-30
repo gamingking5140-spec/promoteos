@@ -57,19 +57,34 @@ export default function AdminPage() {
             </Link>
 
             <Link
-              href="/leaderboard"
-              className="bg-zinc-900 border border-zinc-800 rounded-[32px] p-8 hover:border-zinc-600 transition"
-            >
+  href="/leaderboard"
+  className="bg-zinc-900 border border-zinc-800 rounded-[32px] p-8 hover:border-zinc-600 transition"
+>
 
-              <h2 className="text-3xl font-bold mb-4">
-                Promoters 🏆
-              </h2>
+  <h2 className="text-3xl font-bold mb-4">
+    Promoters 🏆
+  </h2>
 
-              <p className="text-zinc-400 text-lg">
-                Track promoter rankings and growth.
-              </p>
+  <p className="text-zinc-400 text-lg">
+    Track promoter rankings and growth.
+  </p>
 
-            </Link>
+</Link>
+
+<Link
+  href="/admin/withdrawals"
+  className="bg-zinc-900 border border-zinc-800 rounded-[32px] p-8 hover:border-zinc-600 transition"
+>
+
+  <h2 className="text-3xl font-bold mb-4">
+    Withdrawals 💸
+  </h2>
+
+  <p className="text-zinc-400 text-lg">
+    Approve payout requests.
+  </p>
+
+</Link>
 
           </div>
 
