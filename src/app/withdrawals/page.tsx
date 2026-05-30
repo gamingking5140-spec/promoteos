@@ -12,6 +12,12 @@ export default function WithdrawalsPage() {
   const [withdrawals, setWithdrawals] =
     useState<any[]>([]);
 
+    const [upiId, setUpiId] =
+  useState("");
+
+const [lastUpiChange, setLastUpiChange] =
+  useState<any>(null);
+
   useEffect(() => {
 
     const loadCoins = async () => {
@@ -34,7 +40,15 @@ export default function WithdrawalsPage() {
 
       if (!promoter) return;
 
-      setCoins(promoter.coins || 0);
+setCoins(promoter.coins || 0);
+
+setUpiId(
+  promoter.upi_id || ""
+);
+
+setLastUpiChange(
+  promoter.last_upi_change
+);
 
       const {
         data: withdrawalData,
@@ -162,6 +176,81 @@ export default function WithdrawalsPage() {
             </button>
 
           </div>
+
+          <div className="bg-zinc-900 border border-zinc-800 rounded-[40px] p-8 mb-8">
+
+  <h2 className="text-3xl font-bold mb-6">
+    UPI Settings 💳
+  </h2>
+
+  <p className="text-zinc-400 mb-4">
+    Used for payouts.
+  </p>
+
+  <input
+    type="text"
+    value={upiId}
+    onChange={(e) =>
+      setUpiId(e.target.value)
+    }
+    placeholder="yourupi@paytm"
+    className="w-full bg-black border border-zinc-800 rounded-2xl px-5 py-4"
+  />
+
+  <button
+    onClick={async () => {
+
+      if (lastUpiChange) {
+
+        const days =
+          Math.floor(
+            (
+              Date.now() -
+              new Date(
+                lastUpiChange
+              ).getTime()
+            ) /
+            86400000
+          );
+
+        if (days < 7) {
+
+          alert(
+            `Change available in ${7 - days} days`
+          );
+
+          return;
+        }
+      }
+
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session?.user) return;
+
+      await supabase
+        .from("promoters")
+        .update({
+          upi_id: upiId,
+          last_upi_change:
+            new Date().toISOString(),
+        })
+        .eq(
+          "user_id",
+          session.user.id
+        );
+
+      alert("UPI Updated ✅");
+
+      location.reload();
+    }}
+    className="mt-4 bg-white text-black px-6 py-3 rounded-2xl font-bold"
+  >
+    Save UPI
+  </button>
+
+</div>
 
           <div className="bg-zinc-900 border border-zinc-800 rounded-[40px] p-8 mb-8">
 
