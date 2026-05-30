@@ -69,6 +69,34 @@ export default function ProductPage() {
             ]);
 
         console.log(error);
+
+const { data: promoter } =
+  await supabase
+    .from("promoters")
+    .select("*")
+    .eq(
+      "referral_code",
+      ref
+    )
+    .single();
+
+if (promoter) {
+
+  await supabase
+    .from("promoters")
+    .update({
+      clicks:
+        (promoter.clicks || 0) + 1,
+
+      coins:
+        (promoter.coins || 0) + 1,
+    })
+    .eq(
+      "id",
+      promoter.id
+    );
+}
+
       }
     };
 
