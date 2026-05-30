@@ -10,9 +10,12 @@ export default function LeaderboardPage() {
 
   useEffect(() => {
     const loadLeaderboard = async () => {
-      const { data } = await supabase
-        .from("promoters")
-        .select("*");
+    const { data } = await supabase
+      .from("promoters")
+      .select("*")
+      .order("coins", {
+        ascending: false,
+      });
 
       setPromoters(data || []);
     };
@@ -70,9 +73,9 @@ export default function LeaderboardPage() {
 
                 <div className="text-right">
 
-                  <h3 className="text-4xl font-bold text-green-400">
-                    ₹0
-                  </h3>
+<h3 className="text-4xl font-bold text-green-400">
+  {promoter.coins || 0} Coins
+</h3>
 
                   <p className="text-zinc-500">
                     Earnings

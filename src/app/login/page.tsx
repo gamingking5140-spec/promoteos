@@ -97,6 +97,49 @@ export default function LoginPage() {
         ]);
     }
 
+const referralCode =
+  localStorage.getItem(
+    "referral_code"
+  );
+
+if (referralCode && data.user) {
+
+  await supabase
+    .from("referrals")
+    .update({
+      signed_up: true,
+      user_id: data.user.id,
+    })
+    .eq(
+      "referral_code",
+      referralCode
+    );
+
+  const { data: promoter } =
+    await supabase
+      .from("promoters")
+      .select("*")
+      .eq(
+        "referral_code",
+        referralCode
+      )
+      .single();
+
+  if (promoter) {
+
+    await supabase
+      .from("promoters")
+      .update({
+        signups:
+          (promoter.signups || 0) + 1,
+      })
+      .eq(
+        "id",
+        promoter.id
+      );
+  }
+}
+
     await supabase.auth.getSession();
 
     await new Promise((resolve) =>
